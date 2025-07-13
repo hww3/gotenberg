@@ -167,14 +167,12 @@ def download_pdf(
 
 				# Log resource files being sent
 				if resources:
-					resource_paths = []
 					for temp_path, filename in resources:
 						frappe.log_error(f"Resource mapping: {temp_path} -> {filename}")
 						with open(temp_path, "rb") as f:
 							content = f.read()
 							frappe.log_error(f"Resource size: {filename} = {len(content)} bytes")
-						resource_paths.append(Path(temp_path))
-					route.resources(resource_paths)
+						route.resource(resource=Path(temp_path), name=filename)	
 
 				response = route.run()
 				pdf_content = response.content
